@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -11,7 +12,8 @@ public class AddContactTests extends TestBase {
     // preconditions:
     @BeforeMethod
     public void ensurePreconditions() {
-        if (!isSignOutTabPresent()) {
+        if (!isSignOutTabPresent()) { // user should be loggedIn - check Sign Out button displayed
+            // if we don't see 'Sign Out button' - need to log in with user data, who was already registered
             click(By.xpath("//a[contains(., 'LOGIN')]"));
             type(By.cssSelector("[placeholder='Email']"), "krooos@gm.com");
             type(By.cssSelector("[placeholder='Password']"), "Krooos12345~");
@@ -20,7 +22,9 @@ public class AddContactTests extends TestBase {
     }
 
     @Test
-    public void addContactPositiveTest () {
+    public void addContactPositiveTest() {
+        // create variable 'i' - different values for numbers
+        // currentTimeMillis() - return current time
         int i = (int) ((System.currentTimeMillis()) / 1000) % 3600; // return current time, divide 3600
         // click on the tab Add
         click(By.cssSelector("a:nth-child(5)"));
@@ -28,16 +32,24 @@ public class AddContactTests extends TestBase {
         // fill all fields
         type(By.cssSelector("[placeholder='Name']"), "Karl"); // name - [placeholder='Name'] = input:nth-child(1)
         type(By.cssSelector("input:nth-child(2)"), "Adam"); // lastname
+        // we need always type unique phone number and email
+        // to avoid going into the code every time and changing the text,
+        // we can do concatenation. At the beginning are the same digits,
+        // and at the end new digits are added each time
+        // create variable 'i'
         type(By.cssSelector("input:nth-child(3)"), "12345" + i); // phone
         type(By.cssSelector("input:nth-child(4)"), "adam" + i + "@gm.com"); // email
         type(By.cssSelector("input:nth-child(5"), "Koblenz"); // address
         type(By.cssSelector("input:nth-child(6)"), "torwart"); // description
         // click on the Save button - 1-st way
 //        click(By.cssSelector(".add_form__2rsm2 button"));
-        // click on the Save button - 2-nd way
+        // click on the Save button - 2-nd way (if Selenium doesn't see 'Save' button)
+        //
 //        jump();
         // click on the Save button - 3-th way
+        // see in TestBase class
         clickWithAction(By.cssSelector(".add_form__2rsm2 button"));
         // Assert - contact created
+
     }
 }

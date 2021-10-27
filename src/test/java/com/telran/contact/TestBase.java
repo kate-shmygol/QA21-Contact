@@ -24,6 +24,12 @@ public class TestBase {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
     }
 
+    // isHomeComponentPresent, isElementPresent - checking preconditions.
+    // For example:
+    // 1. user logged
+    // 2. logged user has a button LOGOUT in Header (checking an element LOGOUT)
+    // 3. check in the methods locators
+
     // concrete method 1
     public boolean isHomeComponentPresent() {
         // findElementS! not findElement
@@ -58,27 +64,29 @@ public class TestBase {
         }
     }
 
-    // isHomeComponentPresent, isElementPresent - checking preconditions.
-    // For example:
-    // 1. user logged
-    // 2. logged user has a button LOGOUT in Header (checking an element LOGOUT)
-    // 3. check in the methods locators
-
     @AfterMethod(enabled = false)
     public void tearDown() {
         driver.quit();
     }
 
     // cleaning code - refactoring
-    public void click(By locator) {
-        // click on Login
-        // highlight "By.xpath("//a[contains(., 'LOGIN')]")" -> Refactor -> Introduce parametr...
+    public void click(By locator) { // class 'By' responsible for the 'locator'
+        // click on the Login tab
+//        driver.findElement(By.xpath("//a[contains(., 'LOGIN')]")).click();
+        // do variable locator = By.xpath("//a[contains(., 'LOGIN')]")
+        // highlight "xpath" or "By.xpath("//a[contains(., 'LOGIN')]")" -> Refactor -> Introduce parameter... or Ctr + Alt + P
         driver.findElement(locator).click();
     }
 
     public void type(By locator, String text) {
-        click(locator);
+        //        click(By.cssSelector("[placeholder='Email']"), "krooos@gm.com");
+        //        click(By.cssSelector("[placeholder='Password']"), "Krooos12345~");
+        // do variable locator = By.cssSelector("[placeholder='Email']")
+        // highlight "cssSelector" or "By.cssSelector("[placeholder='Email']")" -> Refactor -> Introduce parameter... or Ctr + Alt + P
+        click(locator); // = driver.findElement(locator).click();
         driver.findElement(locator).clear(); // necessarily clear field Email! we don't know what a field is empty
+        // highlight ' "krooos@gm.com" ' -> Refactor -> Introduce parameter... or Ctr + Alt + P
+        // change variable 's' on the 'text'
         driver.findElement(locator).sendKeys(text);
     }
 
@@ -95,17 +103,20 @@ public class TestBase {
     }
 
     public boolean isAlertPresent() {
+        // special library 'Alert' with class 'Alert'
+        // initialize 'Alert' with Selenium class 'WebDriverWait', which is waiting for Alert
         Alert alert = new WebDriverWait(driver, Duration.ofSeconds(20)).until(ExpectedConditions.alertIsPresent());
         if (alert == null) {
             return false;
         } else {
-            driver.switchTo().alert();
-            alert.accept();
+            driver.switchTo().alert(); // switchTo() - method of the class Alert, which redirects on the pop-up window Alert
+            alert.accept(); // click on the 'ok' on the pop-up window Alert
             return true;
         }
     }
 
     // click on the Save button - 3-th way
+    // invoke the class Actions and initialise it
     public void clickWithAction(By save) {
         Actions action = new Actions(driver);
         WebElement element = driver.findElement(save);
@@ -113,12 +124,13 @@ public class TestBase {
         element.click();
     }
 
-    // click on the Save button - 2-nd way
+    // click on the Save button - 2-nd way (if Selenium doesn't see 'Save' button)
     public void jump() {
         driver.findElement(By.cssSelector(".add_form__2rsm2 button")).sendKeys(Keys.CONTROL, Keys.END);
     }
 
     public void pause(int millis) {
         new WebDriverWait(driver, Duration.ofSeconds(millis));
+        new WebDriverWait(driver, Duration.ofMillis(millis));
     }
 }
