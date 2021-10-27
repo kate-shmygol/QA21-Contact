@@ -1,10 +1,11 @@
 package com.telran.contact;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
@@ -30,7 +31,7 @@ public class TestBase {
     }
 
     // concrete method 2 - try ... catch - alternative one for concrete method 1
-    public boolean isHomeComponentPresent2 () {
+    public boolean isHomeComponentPresent2() {
         try {
             // findElement! not findElementS
             // if you will find that element - true
@@ -43,12 +44,12 @@ public class TestBase {
     }
 
     // universal method 1 from concrete method 1 with locator - isHomeComponentPresent()
-    public boolean isElementPresent (By locator) {
+    public boolean isElementPresent(By locator) {
         return driver.findElements(locator).size() > 0;
     }
 
     // universal method 2 - try ... catch with locator
-    public boolean isElementPresent2 (By locator) {
+    public boolean isElementPresent2(By locator) {
         try {
             driver.findElement(locator);
             return true;
@@ -63,9 +64,61 @@ public class TestBase {
     // 2. logged user has a button LOGOUT in Header (checking an element LOGOUT)
     // 3. check in the methods locators
 
-
     @AfterMethod(enabled = false)
     public void tearDown() {
         driver.quit();
+    }
+
+    // cleaning code - refactoring
+    public void click(By locator) {
+        // click on Login
+        // highlight "By.xpath("//a[contains(., 'LOGIN')]")" -> Refactor -> Introduce parametr...
+        driver.findElement(locator).click();
+    }
+
+    public void type(By locator, String text) {
+        click(locator);
+        driver.findElement(locator).clear(); // necessarily clear field Email! we don't know what a field is empty
+        driver.findElement(locator).sendKeys(text);
+    }
+
+    public boolean isLoginTabPresent() {
+        return isElementPresent(By.xpath("//a[contains(., 'LOGIN')]"));
+    }
+
+    public boolean isSignOutTabPresent() {
+        return isElementPresent(By.xpath("//button[contains(.,'Sign Out')]"));
+    }
+
+    public boolean isLoginRegistrationFormPresent() {
+        return isElementPresent(By.cssSelector(".login_login__3EHKB"));
+    }
+
+    public boolean isAlertPresent() {
+        Alert alert = new WebDriverWait(driver, Duration.ofSeconds(20)).until(ExpectedConditions.alertIsPresent());
+        if (alert == null) {
+            return false;
+        } else {
+            driver.switchTo().alert();
+            alert.accept();
+            return true;
+        }
+    }
+
+    // click on the Save button - 3-th way
+    public void clickWithAction(By save) {
+        Actions action = new Actions(driver);
+        WebElement element = driver.findElement(save);
+        action.moveToElement(element).build().perform();
+        element.click();
+    }
+
+    // click on the Save button - 2-nd way
+    public void jump() {
+        driver.findElement(By.cssSelector(".add_form__2rsm2 button")).sendKeys(Keys.CONTROL, Keys.END);
+    }
+
+    public void pause(int millis) {
+        new WebDriverWait(driver, Duration.ofSeconds(millis));
     }
 }

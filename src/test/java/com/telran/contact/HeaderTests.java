@@ -13,16 +13,16 @@ public class HeaderTests extends TestBase {
     public void ensurePreconditions() {
         // preconditions:
         // user should be logged out
-        if (!isElementPresent(By.xpath("//a[contains(., 'LOGIN')]"))) {
+        if (!isLoginTabPresent()) {
         // click on Sign Out button
-            driver.findElement(By.xpath("//button[contains(.,'Sign Out')]")).click();
+            click(By.xpath("//button[contains(.,'Sign Out')]"));
         }
     }
 
     @Test
     public void tabHomeTest () {
         // click on HOME
-        driver.findElement(By.xpath("//a[contains(., 'HOME')]")).click();
+        click(By.xpath("//a[contains(., 'HOME')]"));
         Assert.assertTrue(isElementPresent(By.cssSelector("div:nth-child(2) > div > div")));
         System.out.println("Tab HOME. Home Component: " + isElementPresent(By.cssSelector("div:nth-child(2) > div > div")));
     }
@@ -30,31 +30,27 @@ public class HeaderTests extends TestBase {
     @Test
     public void tabAboutTest () {
         // click on ABOUT
-        driver.findElement(By.xpath("//a[contains(., 'ABOUT')]")).click();
+        click(By.xpath("//a[contains(., 'ABOUT')]"));
         Assert.assertTrue(isElementPresent(By.cssSelector("div:nth-child(2) > div")));
         System.out.println("Tab ABOUT. Contacts Web Application: " + isElementPresent(By.cssSelector("div:nth-child(2) > div")));
     }
 
     public void userLogin () {
         // click on Login
-        driver.findElement(By.xpath("//a[contains(., 'LOGIN')]")).click();
+        click(By.xpath("//a[contains(., 'LOGIN')]"));
         // make sure that the Login form is present
-        Assert.assertTrue(isElementPresent(By.cssSelector(".login_login__3EHKB")));
+        Assert.assertTrue(isLoginRegistrationFormPresent());
         // fill Login form
         // krooos@gm.com
         // Krooos12345~
-        driver.findElement(By.cssSelector("[placeholder='Email']")).click();
-        driver.findElement(By.cssSelector("[placeholder='Email']")).clear();
-        driver.findElement(By.cssSelector("[placeholder='Email']")).sendKeys("krooos@gm.com");
+        type(By.cssSelector("[placeholder='Email']"), "krooos@gm.com");
 
-        driver.findElement(By.cssSelector("[placeholder='Password']")).click();
-        driver.findElement(By.cssSelector("[placeholder='Password']")).clear();
-        driver.findElement(By.cssSelector("[placeholder='Password']")).sendKeys("Krooos12345~");
+        type(By.cssSelector("[placeholder='Password']"), "Krooos12345~");
         // click on Login button
         // xpath: //button[contains(., 'Login')]
-        driver.findElement(By.xpath("//button[contains(., 'Login')]")).click();
+        click(By.xpath("//button[contains(., 'Login')]"));
         // check Sign Out button displayed - make sure that the Sign Out button is present
-        Assert.assertTrue(isElementPresent(By.xpath("//button[contains(.,'Sign Out')]")));
+        Assert.assertTrue(isSignOutTabPresent());
     }
     // qwerty@qwe.com
     // qwerty123~
@@ -62,7 +58,7 @@ public class HeaderTests extends TestBase {
     public void tabContactsTest () {
         userLogin();
          // click on CONTACTS
-        driver.findElement(By.xpath("//a[contains(., 'CONTACTS')]")).click();
+        click(By.xpath("//a[contains(., 'CONTACTS')]"));
         Assert.assertTrue(isElementPresent(By.cssSelector("div:nth-child(2) > div")));
         System.out.println("Tab CONTACTS. No Contacts here: " + isElementPresent(By.cssSelector("div:nth-child(2) > div")));
     }
@@ -71,11 +67,8 @@ public class HeaderTests extends TestBase {
     public void tabAddTest () {
         userLogin();
         // click on ADD
-        driver.findElement(By.xpath("//a[contains(., 'ADD')]")).click();
+        click(By.xpath("//a[contains(., 'ADD')]"));
         Assert.assertTrue(isElementPresent(By.cssSelector("[placeholder='Name']")));
         System.out.println("Tab ADD. Placeholder 'Name:' " + isElementPresent(By.cssSelector("[placeholder='Name']")));
     }
-
-
-
 }
