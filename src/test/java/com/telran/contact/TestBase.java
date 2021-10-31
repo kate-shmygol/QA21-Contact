@@ -2,23 +2,23 @@ package com.telran.contact;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeSuite;
 
 import java.time.Duration;
+import java.util.List;
 
 // parent class - always is "TestBase"
 public class TestBase {
-    WebDriver driver;
+    static WebDriver driver; // type 'static' after typing @BeforeSuite
 
-    @BeforeMethod
+    @BeforeSuite // run only 1 time. @BeforeSuite without 'static' wouldn't work
     public void setUp() {
-//        driver = new ChromeDriver();
-        driver = new FirefoxDriver();
+        driver = new ChromeDriver();
+//        driver = new FirefoxDriver();
         driver.get("https://contacts-app.tobbymarshall815.vercel.app/home");
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
@@ -64,7 +64,7 @@ public class TestBase {
         }
     }
 
-    @AfterMethod(enabled = false)
+    @AfterSuite(enabled = false)
     public void tearDown() {
         driver.quit();
     }
@@ -79,15 +79,11 @@ public class TestBase {
     }
 
     public void type(By locator, String text) {
-        //        click(By.cssSelector("[placeholder='Email']"), "krooos@gm.com");
-        //        click(By.cssSelector("[placeholder='Password']"), "Krooos12345~");
-        // do variable locator = By.cssSelector("[placeholder='Email']")
-        // highlight "cssSelector" or "By.cssSelector("[placeholder='Email']")" -> Refactor -> Introduce parameter... or Ctr + Alt + P
-        click(locator); // = driver.findElement(locator).click();
-        driver.findElement(locator).clear(); // necessarily clear field Email! we don't know what a field is empty
-        // highlight ' "krooos@gm.com" ' -> Refactor -> Introduce parameter... or Ctr + Alt + P
-        // change variable 's' on the 'text'
-        driver.findElement(locator).sendKeys(text);
+        if (text != null) {
+            click(locator);
+            driver.findElement(locator).clear();
+            driver.findElement(locator).sendKeys(text);
+        }
     }
 
     public boolean isLoginTabPresent() {
@@ -131,6 +127,75 @@ public class TestBase {
 
     public void pause(int millis) {
         new WebDriverWait(driver, Duration.ofSeconds(millis));
-        new WebDriverWait(driver, Duration.ofMillis(millis));
+//        new WebDriverWait(driver, Duration.ofMillis(millis));
+    }
+
+    public void clickOnSignOutButton() {
+        click(By.xpath("//button[contains(.,'Sign Out')]"));
+    }
+
+    public void clickOnLoginTab() {
+        click(By.xpath("//a[contains(.,'LOGIN')]"));
+    }
+
+    public void createNewAccount(User user) {
+        type(By.cssSelector("[placeholder='Email']"), user.getEmail());
+        type(By.cssSelector("[placeholder='Password']"), user.getPassword());
+        // click on Registration button
+        click(By.xpath("//button[contains(.,'Registration')]"));
+    }
+
+    public void addNewContact(String name, String surName, String phone, String email, String address, String description) {
+        click(By.cssSelector("a:nth-child(5)"));
+        type(By.cssSelector("[placeholder='Name']"), name); // name - [placeholder='Name'] = input:nth-child(1)
+        type(By.cssSelector("input:nth-child(2)"), surName); // lastname
+        type(By.cssSelector("input:nth-child(3)"), phone); // phone
+        type(By.cssSelector("input:nth-child(4)"), email); // email
+        type(By.cssSelector("input:nth-child(5"), address); // address
+        type(By.cssSelector("input:nth-child(6)"), description); // description
+        clickWithAction(By.cssSelector(".add_form__2rsm2 button"));
+    }
+
+    public boolean isContactCreated(String text) {
+        // check list of contacts
+        List<WebElement> contacts = driver.findElements(By.xpath("//h2"));
+//        List<WebElement> contacts = driver.findElements(By.xpath("//h3"));
+        // going over the contacts (перебираем)
+        for (WebElement el : contacts) {
+            if (el.getText().contains(text))
+                return true;
+        }
+        return false;
+    }
+
+    public void removeContact() {
+        if (!isContactListEmpty()) {
+            driver.findElement(By.cssSelector(".contact-item_card__2SOIM")).click();
+            driver.findElement(By.xpath("//button[text()='Remove']")).click();
+//            click(By.cssSelector(".contact-item_card__2SOIM"));
+//            click(By.xpath("//button[text()='Remove']"));
+        }
+    }
+
+    public boolean isContactListEmpty() {
+        return driver.findElements(By.cssSelector(".contact-item_card__2SOIM")).isEmpty();
+    }
+
+    public int sizeOfContacts() {
+        // if amount more than 0, return list
+        if (driver.findElements(By.cssSelector(".contact-item_card__2SOIM")).size() > 0) {
+            return driver.findElements(By.cssSelector(".contact-item_card__2SOIM")).size();
+        } else {
+            return sizeOfContacts();
+//            return -1;
+        }
+    }
+
+    public void login(User user) {
+        type(By.cssSelector("[placeholder='Email']"), user.getEmail());
+        type(By.cssSelector("[placeholder='Password']"), user.getPassword());
+        // submit Login - click on Login button
+        // xpath: //button[contains(., 'Login')]
+        click(By.xpath("//button[contains(., 'Login')]"));
     }
 }

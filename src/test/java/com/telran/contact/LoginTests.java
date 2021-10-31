@@ -1,14 +1,8 @@
 package com.telran.contact;
 
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import java.time.Duration;
 
 public class LoginTests extends TestBase {
 
@@ -18,12 +12,12 @@ public class LoginTests extends TestBase {
         // login didn't present
         if (!isLoginTabPresent()) {
             // click on Sign Out button
-            click(By.xpath("//button[contains(.,'Sign Out')]"));
+            clickOnSignOutButton();
         }
     }
 
     // positive test
-    @Test
+    @Test(priority = 2)
     public void loginRegisteredUserPositiveTest() {
         // 1. click on the Login tab
         // 2. fill Login form
@@ -31,14 +25,12 @@ public class LoginTests extends TestBase {
         // 4. Assert user loggedIn - make sure that the Sign Out button is present
 
         // click on the Login tab - copy from CreateAccountTest
-        click(By.xpath("//a[contains(., 'LOGIN')]"));
+        clickOnLoginTab();
         Assert.assertTrue(isLoginRegistrationFormPresent());
         // fill Login form - copy from CreateAccountTest
-        type(By.cssSelector("[placeholder='Email']"), "krooos@gm.com");
-        type(By.cssSelector("[placeholder='Password']"), "Krooos12345~");
-        // submit Login - click on Login button
-        // xpath: //button[contains(., 'Login')]
-        click(By.xpath("//button[contains(., 'Login')]"));
+        login(new User()
+                .setEmail("krooos@gm.com")
+                .setPassword("Krooos12345~"));
         // Assert user loggedIn - check Sign Out button displayed
         Assert.assertTrue(isSignOutTabPresent());
     }
@@ -46,16 +38,15 @@ public class LoginTests extends TestBase {
     // negative test - the same 'loginRegisteredUserPositiveTest()'
     // only checking instead 'Assert.assertTrue(isSignOutTabPresent())' - 'isAlertPresent()'
 
-    @Test
+    @Test(priority = 1)
     public void loginRegisteredUserNegativeWithWrongPasswordTest() {
         // click on the Login tab
-        click(By.xpath("//a[contains(., 'LOGIN')]"));
+        clickOnLoginTab();
         Assert.assertTrue(isLoginRegistrationFormPresent());
         // fill Login form
-        type(By.cssSelector("[placeholder='Email']"), "krooos@gm.com");
-        type(By.cssSelector("[placeholder='Password']"), "Krooos12345");
-        // submit Login
-        click(By.xpath("//button[contains(., 'Login')]"));
+        login(new User()
+                .setEmail("krooos@gm.com")
+                .setPassword("Krooos12345"));
         // Assert user loggedIn
         // isAlertPresent() - catch a window with alert
         Assert.assertTrue(isAlertPresent());

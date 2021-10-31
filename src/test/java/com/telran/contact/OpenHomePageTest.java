@@ -6,8 +6,9 @@ import org.testng.annotations.Test;
 public class OpenHomePageTest extends TestBase {
 
     @Test
-    public void homePageTest() {
+    public void homePageTest() throws InterruptedException {
         System.out.println("Site opened!");
+        Thread.sleep(2000);
 //        System.out.println("HomeComponent: " + isHomeComponentPresent());
         System.out.println("HomeComponent: " + isElementPresent(By.cssSelector("div:nth-child(2) > div > div")));
     }

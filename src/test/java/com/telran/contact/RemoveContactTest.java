@@ -5,6 +5,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+// HomeWork
+
 public class RemoveContactTest extends TestBase {
     // preconditions:
     @BeforeMethod
@@ -12,7 +14,7 @@ public class RemoveContactTest extends TestBase {
         // user should be loggedIn - check Sign Out button displayed
         if (!isSignOutTabPresent()) {
             // if we don't see 'Sign Out button' - need to log in with user data, who was already registered
-            click(By.xpath("//a[contains(., 'LOGIN')]"));
+            clickOnLoginTab();
             type(By.cssSelector("[placeholder='Email']"), "krooos@gm.com");
             type(By.cssSelector("[placeholder='Password']"), "Krooos12345~");
             click(By.xpath("//button[contains(., 'Login')]"));
@@ -66,11 +68,11 @@ public class RemoveContactTest extends TestBase {
         // cssSelector: .contact-item_card__2SOIM  doesn't have tags h2, h3
     }
 
-    private boolean isContactItemDetailedCardDoesntPresent() {
+    public boolean isContactItemDetailedCardDoesntPresent() {
         return isElementPresent(By.cssSelector(".contact-page_rightdiv__1NgZC"));
     }
 
-    private boolean isContactItemDetailedCardPresent() {
+    public boolean isContactItemDetailedCardPresent() {
         return isElementPresent(By.cssSelector(".contact-item-detailed_card__50dTS"));
     }
 }
