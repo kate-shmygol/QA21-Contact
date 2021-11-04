@@ -1,5 +1,6 @@
 package com.telran.contact.tests;
 
+import com.telran.contact.fw.DataProviders;
 import com.telran.contact.models.Contact;
 import com.telran.contact.models.User;
 import org.testng.Assert;
@@ -7,6 +8,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class AddContactTests extends TestBase {
+
 	// preconditions:
 	@BeforeMethod
 	public void ensurePreconditions() {
@@ -30,6 +32,23 @@ public class AddContactTests extends TestBase {
 		// Assert - contact created
 		Assert.assertTrue(app.getContact().isContactCreated("Karl"));
 //        Assert.assertTrue(isContactCreated("12345678"));
+	}
+
+	@Test(dataProvider = "newContact", dataProviderClass = DataProviders.class)
+	public void addContactPositiveFromDataProviderTest(String name, String sName, String ph, String email, String addr, String descr) throws InterruptedException {
+
+		app.getContact().addNewContact(new Contact().setName(name).setSurName(sName).setPhone(ph)
+				.setEmail(email).setAddress(addr).setDescription(descr));
+		app.getContact().removeContact();
+		Thread.sleep(2000);
+	}
+
+	@Test(dataProvider = "newContactFromCSV", dataProviderClass = DataProviders.class)
+	public void addContactPositiveFromCSVTest(Contact contact) throws InterruptedException {
+
+		app.getContact().addNewContact(contact);
+		app.getContact().removeContact();
+		Thread.sleep(2000);
 	}
 }
 
