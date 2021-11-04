@@ -5,8 +5,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
-
 public class HelperBase {
 
 	WebDriver driver; // type 'static' after typing @BeforeSuite
@@ -50,7 +48,7 @@ public class HelperBase {
 	public boolean isAlertPresent() {
 		// special library 'Alert' with class 'Alert'
 		// initialize 'Alert' with Selenium class 'WebDriverWait', which is waiting for Alert
-		Alert alert = new WebDriverWait(driver, Duration.ofSeconds(20)).until(ExpectedConditions.alertIsPresent());
+		Alert alert = new WebDriverWait(driver, 10).until(ExpectedConditions.alertIsPresent());
 		if (alert == null) {
 			return false;
 		} else {
@@ -70,7 +68,6 @@ public class HelperBase {
 	}
 
 	public void pause(int millis) {
-		new WebDriverWait(driver, Duration.ofSeconds(millis));
-//        new WebDriverWait(driver, Duration.ofMillis(millis));
+		new WebDriverWait(driver, millis);
 	}
 }

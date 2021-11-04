@@ -1,9 +1,9 @@
 package com.telran.contact.fw;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 public class ApplicationManager {
 
@@ -30,7 +30,7 @@ public class ApplicationManager {
 //        driver = new FirefoxDriver();
 		driver.get("https://contacts-app.tobbymarshall815.vercel.app/home");
 		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
 		user = new UserHelper(driver); // initialized UserHelper
 		contact = new ContactHelper(driver); // initialized ContactHelper
