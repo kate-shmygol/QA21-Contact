@@ -1,6 +1,10 @@
 package com.telran.contact.tests;
 
 import com.telran.contact.fw.ApplicationManager;
+<<<<<<< Updated upstream
+=======
+import org.openqa.selenium.remote.BrowserType;
+>>>>>>> Stashed changes
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITestResult;
@@ -15,7 +19,11 @@ import java.util.Arrays;
 // parent class - always is "TestBase"
 public class TestBase {
 
+<<<<<<< Updated upstream
 	protected static ApplicationManager app = new ApplicationManager(); // change 'final' on 'static'
+=======
+	protected static ApplicationManager app = new ApplicationManager(System.getProperty("browser", BrowserType.CHROME)); // change 'final' on 'static'
+>>>>>>> Stashed changes
 
 	Logger logger = LoggerFactory.getLogger(TestBase.class);
 
@@ -39,7 +47,12 @@ public class TestBase {
 		if (result.isSuccess()) {
 			logger.info("PASSED: test method " + result.getMethod().getMethodName());
 		} else {
+<<<<<<< Updated upstream
 			logger.error("FAILED: test method " + result.getMethod().getMethodName());
+=======
+			logger.error("FAILED: test method " + result.getMethod().getMethodName()
+			+ "Screenshot: " + app.getContact().takeScreenshot());
+>>>>>>> Stashed changes
 		}
 		logger.info("============================================");
 	}
