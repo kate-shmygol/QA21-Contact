@@ -1,9 +1,5 @@
 package com.telran.contact.fw;
 
-<<<<<<< Updated upstream
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-=======
 import com.telran.contact.tests.TestBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -15,28 +11,23 @@ import org.openqa.selenium.support.events.AbstractWebDriverEventListener;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
->>>>>>> Stashed changes
 
 import java.util.concurrent.TimeUnit;
 
 public class ApplicationManager {
-<<<<<<< Updated upstream
 
-	WebDriver driver; // type 'static' after typing @BeforeSuite
-=======
+//	WebDriver driver; // type 'static' after typing @BeforeSuite
+
 	String browser;
 
 //	WebDriver driver; // type 'static' after typing @BeforeSuite
 
 	EventFiringWebDriver driver;
->>>>>>> Stashed changes
 
 	UserHelper user; // created variable 'user'
 	ContactHelper contact; // created variable 'contact'
 	HomeHelper home; // created variable 'home'
 
-<<<<<<< Updated upstream
-=======
 	public ApplicationManager(String browser) {
 		this.browser = browser;
 	}
@@ -61,7 +52,6 @@ public class ApplicationManager {
 		}
 	}
 
->>>>>>> Stashed changes
 	public UserHelper getUser() {
 		return user;
 	}
@@ -75,10 +65,10 @@ public class ApplicationManager {
 	}
 
 	public void init() {
-<<<<<<< Updated upstream
-		driver = new ChromeDriver();
+
+//		driver = new ChromeDriver();
 //        driver = new FirefoxDriver();
-=======
+
 //		driver = new ChromeDriver();
 //        driver = new FirefoxDriver();
 		if (browser.equals(BrowserType.CHROME)) {
@@ -87,7 +77,6 @@ public class ApplicationManager {
 			driver = new EventFiringWebDriver(new FirefoxDriver());
 		}
 
->>>>>>> Stashed changes
 		driver.get("https://contacts-app.tobbymarshall815.vercel.app/home");
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -95,11 +84,8 @@ public class ApplicationManager {
 		user = new UserHelper(driver); // initialized UserHelper
 		contact = new ContactHelper(driver); // initialized ContactHelper
 		home = new HomeHelper(driver); // initialized HomeHelper
-<<<<<<< Updated upstream
-=======
 
 		driver.register(new MyListener());
->>>>>>> Stashed changes
 	}
 
 	// isHomeComponentPresent, isElementPresent - checking preconditions.

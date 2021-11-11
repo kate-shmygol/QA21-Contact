@@ -29,11 +29,7 @@ public class CreateAccountTest extends TestBase {
 	// 4. check Sign Out button displayed
 
 	@Test
-<<<<<<< Updated upstream
-	public void registrationPositiveTest() {
-=======
 	public void registrationPositiveTest() throws InterruptedException {
->>>>>>> Stashed changes
 		// click on Login
 		app.getUser().clickOnLoginTab();
 		Assert.assertTrue(app.getUser().isLoginRegistrationFormPresent());
@@ -41,13 +37,10 @@ public class CreateAccountTest extends TestBase {
 		app.getUser().createNewAccount(new User()
 				.setEmail("krooos@gm.com")
 				.setPassword("Krooos12345~"));
-<<<<<<< Updated upstream
 		Assert.assertTrue(app.getUser().isSignOutTabPresent());
-=======
 		Thread.sleep(2000);
 		Assert.assertTrue(app.getUser().isSignOutTabPresent());
 		Thread.sleep(2000);
->>>>>>> Stashed changes
 	}
 
 	@Test
