@@ -1,5 +1,13 @@
+
+.idea/*
+.idea/
+out/
+/out/
+debug/
+
 .gradle
 
+gradle/
 /build/classes/
 /build/generated/
 /build/reports/

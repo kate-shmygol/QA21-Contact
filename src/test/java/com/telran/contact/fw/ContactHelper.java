@@ -22,7 +22,7 @@ public class ContactHelper extends HelperBase {
 		type(By.cssSelector("input:nth-child(4)"), contact.getEmail()); // email
 		type(By.cssSelector("input:nth-child(5"), contact.getAddress()); // address
 		type(By.cssSelector("input:nth-child(6)"), contact.getDescription()); // description
-		clickWithAction(By.cssSelector(".add_form__2rsm2 button"));
+		clickWithActions(By.cssSelector(".add_form__2rsm2 button"));
 	}
 
 	public boolean isContactCreated(String text) {

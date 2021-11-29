@@ -37,7 +37,7 @@ public class CreateAccountTest extends TestBase {
 		app.getUser().createNewAccount(new User()
 				.setEmail("krooos@gm.com")
 				.setPassword("Krooos12345~"));
-		Assert.assertTrue(app.getUser().isSignOutTabPresent());
+		//check Logout button displayed
 		Thread.sleep(2000);
 		Assert.assertTrue(app.getUser().isSignOutTabPresent());
 		Thread.sleep(2000);
